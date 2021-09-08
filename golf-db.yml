@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: golf-db
+spec:
+  selector:
+    matchLabels:
+      app: golf-db
+  serviceName: "golf-db-service"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: golf-db
+    spec:
+      volumes:
+        - name: data-storage
+          persistentVolumeClaim:
+            claimName:  golf-pvc
+      containers:
+      - name: golf-db
+        image: postgres:latest
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: golf
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: golf-db-secret
+              key: golf-db-username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: golf-db-secret
+              key: golf-db-password
+        - name: PGDATA
+          value: /data/pgdata 
+        volumeMounts:
+        - mountPath: "/data"
+          name: data-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: golf-db-service
+spec:
+  selector:
+    app: golf-db
+  ports:
+  - port: 5432
+    targetPort: 5432

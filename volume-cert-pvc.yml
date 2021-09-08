@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: golf-web-pvc
+spec:
+  resources:
+    requests:
+      storage: 2M
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
