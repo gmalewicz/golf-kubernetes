@@ -3,9 +3,10 @@ apiVersion: v1
 metadata:
   name: golf-web-pvc
 spec:
+  accessModes:
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 2M
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
+      storage: 1Gi
+  storageClassName: do-block-storage
+  

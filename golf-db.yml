@@ -13,10 +13,6 @@ spec:
       labels:
         app: golf-db
     spec:
-      volumes:
-        - name: data-storage
-          persistentVolumeClaim:
-            claimName:  golf-pvc
       containers:
       - name: golf-db
         image: postgres:13
@@ -40,6 +36,10 @@ spec:
         volumeMounts:
         - mountPath: "/data"
           name: data-storage
+      volumes:
+        - name: data-storage
+          persistentVolumeClaim:
+            claimName:  golf-pvc
 ---
 apiVersion: v1
 kind: Service
