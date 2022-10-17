@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: golf-pvc
+  name: golf-backup-pvc
 spec:
   resources:
     requests:
-      storage: 2Gi
+      storage: 1Gi
   accessModes:
     - ReadWriteOnce
   storageClassName: do-block-storage
