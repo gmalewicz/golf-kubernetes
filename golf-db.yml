@@ -36,10 +36,15 @@ spec:
         volumeMounts:
         - mountPath: "/data"
           name: data-storage
+        - mountPath: "/backups"
+          name: backup-storage
       volumes:
         - name: data-storage
           persistentVolumeClaim:
             claimName:  golf-pvc
+        - name: backup-storage
+          persistentVolumeClaim:
+            claimName:  golf-backup-pvc
 ---
 apiVersion: v1
 kind: Service
