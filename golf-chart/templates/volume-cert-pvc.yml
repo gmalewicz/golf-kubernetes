@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: golf-web-pvc
+spec:
+{{- if eq .Values.development true }}
+{{- include "golfWebTestCertPV" . | indent 2 }}
+{{- else }}
+{{- include "golfWebProductionCertPV" . | indent 2 }}
+{{- end }}
+  

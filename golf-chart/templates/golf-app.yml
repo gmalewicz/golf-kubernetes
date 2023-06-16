@@ -72,7 +72,7 @@ spec:
         - name: spring.datasource.url
           value: jdbc:postgresql://${PG_SERVER}/golf
         - name: spring.profiles.active
-          value: prod
+          value: {{ .Values.golfApp.profile }}
 ---
 apiVersion: v1
 kind: Service

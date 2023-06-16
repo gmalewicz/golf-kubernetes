@@ -1,0 +1,10 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: golf-backup-pvc
+spec:
+{{- if eq .Values.development true }}
+{{- include "golfDbTestBackupPV" . | indent 2 }}
+{{- else }}
+{{- include "golfDbProductionBackupPV" . | indent 2 }}
+{{- end }}
