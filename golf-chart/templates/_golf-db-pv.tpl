@@ -27,7 +27,7 @@ storageClassName: do-block-storage
 {{- end }}
 # test backup volume configuration
 {{- define "golfDbTestBackupPV"}}
-storageClassName: hostpath
+storageClassName: backup-storage
 resources:
   requests:
     storage: {{ .Values.golfDb.backupStorageSize }}

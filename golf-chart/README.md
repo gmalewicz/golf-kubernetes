@@ -30,8 +30,25 @@ spec:
     path: /C/Data/cert
     type: DirectoryOrCreate
 
+b. Create backup volume - example below. Update path if required.
+	
+apiVersion:  v1
+kind: PersistentVolume
+metadata:
+  name: golf-backup-pv
+spec:
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: backup-storage
+  volumeMode: Filesystem
+  capacity:
+    storage: 10M
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /C/Data/backup
+    type: Directory
 
-b. Copy values.yaml into test-values.yaml and update it with correct data regarding credentials, allowed origin, etc... 
+c. Copy values.yaml into test-values.yaml and update it with correct data regarding credentials, allowed origin, etc... 
    Following must be set in order to have functional application (base64 encoded)
 	golfDb.credentials.username: your_defined_username
 	golfDb.credentials.password: your_defined_password
