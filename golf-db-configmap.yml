@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
   name: golf-db-configmap
 data:
-  database_url: golf-db-service
+  POSTGRES_DB: golf
+  PGDATA: /data/pgdata

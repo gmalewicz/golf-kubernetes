@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: golf-app-configmap
+data:
+  PG_SERVER: golf-db-service
+  spring.datasource.url: jdbc:postgresql://${PG_SERVER}/golf
+  spring.profiles.active: prod
