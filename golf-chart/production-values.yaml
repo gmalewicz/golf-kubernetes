@@ -1,0 +1,6 @@
+golfDb:
+  cerdentials:
+    username: Z29sZl91c3I=
+    password: d2VsY29tZQ==
+  dataStorageSize: 2Gi
+  backupStorageSize: 1Gi

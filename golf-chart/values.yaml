@@ -1,0 +1,19 @@
+golfDb:
+  credentials:
+    username: db_username
+    password: db_password
+    backupPassword: db_password
+  dataStorageSize: 2Gi
+  backupStorageSize: 1Gi
+golfApp:
+  mailUsername: mail-username
+  mailPassword: mail-password
+  recaptchaSite: recaptcha-site 
+  recaptchaSecret: recaptcha-secret
+  allowedOrigins: allowed-origins
+  facebookSecret: facebook-secret
+  googleSecret: google-secret
+  profile: prod
+golfWeb:
+  certStorageSize: 1Gi
+development: false

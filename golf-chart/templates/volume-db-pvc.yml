@@ -1,0 +1,10 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: golf-pvc
+spec:
+{{- if eq .Values.development true }}
+{{- include "golfDbTestDataPV" . | indent 2 }}
+{{- else }}
+{{- include "golfDbProductionDataPV" . | indent 2 }}
+{{- end }}
