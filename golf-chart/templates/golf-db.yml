@@ -16,23 +16,20 @@ spec:
       containers:
       - name: golf-db
         image: postgres:13
+        envFrom:
+        - secretRef:
+            name: golf-db-secret
+        - configMapRef:
+            name: golf-db-configmap
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "200m"
+          limits:
+            memory: "100Mi"
+            cpu: "200m"
         ports:
         - containerPort: 5432
-        env:
-        - name: POSTGRES_DB
-          value: golf
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: golf-db-secret
-              key: golf-db-username
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: golf-db-secret
-              key: golf-db-password
-        - name: PGDATA
-          value: /data/pgdata 
         volumeMounts:
         - mountPath: "/data"
           name: data-storage

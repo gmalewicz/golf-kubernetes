@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
   name: golf-web-configmap
 data:
-  app_url: golf-app-service
+  GOLF_SERVER: golf-app-service
+  CERT: /cert
