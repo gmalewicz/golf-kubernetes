@@ -1,19 +1,19 @@
 golfDb:
   credentials:
-    username: db_username
-    password: db_password
-    backupPassword: db_password
-  dataStorageSize: 2Gi
-  backupStorageSize: 1Gi
+    username: Z29sZl91c3I=
+    password: d2VsY29tZQ==
+    backupPassword: KjoqOio6Kjp3ZWxjb21l
+  dataStorageSize: 100M
+  backupStorageSize: 10M
 golfApp:
-  mailUsername: mail-username
-  mailPassword: mail-password
-  recaptchaSite: recaptcha-site 
-  recaptchaSecret: recaptcha-secret
-  allowedOrigins: allowed-origins
-  facebookSecret: facebook-secret
-  googleSecret: google-secret
-  profile: prod
+  mailUsername: ZHJ1bmtnbmdAZ21haWwuY29t
+  mailPassword: cXRxcGt2Y3hxZmFsY2J1aw==
+  recaptchaSite: NkxmLTY2WVpBQUFBQUpjM3NlcndmMWlSb0pnNlBnVFBKYXprZk5XRA== 
+  recaptchaSecret: NkxmLTY2WVpBQUFBQUhjdzlUQ0RDNldfRTBmQ3pCWHpGdDdPeV9WdQ==
+  allowedOrigins: bG9jYWxob3N0Ojg5MDA=
+  facebookSecret: M2FhMDEzMTBhYWFlNTNhZDcxOTk2YjQ2ZmY3ZjljNDU=
+  googleSecret: R09DU1BYLXRYRDhTM3Viei1CLVFBWkt1STFXamhPVUdzbnE=
+  profile: dev
 golfWeb:
-  certStorageSize: 1Gi
-development: false
+  certStorageSize: 1M
+development: true
