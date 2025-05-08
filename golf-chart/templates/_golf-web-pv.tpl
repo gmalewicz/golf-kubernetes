@@ -9,11 +9,11 @@ storageClassName: do-block-storage
 {{- end }}
 # test cert volume configuration
 {{- define "golfWebTestCertPV"}}
-storageClassName: local-storage
+storageClassName: golf-web-pv
 resources:
   requests:
     storage: {{ .Values.golfWeb.certStorageSize }}
 accessModes:
   - ReadWriteOnce
-volumeName: golf-web-pv
+#volumeName: golf-web-pv
 {{- end }}

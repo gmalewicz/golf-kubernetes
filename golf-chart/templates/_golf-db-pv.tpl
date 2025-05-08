@@ -9,12 +9,22 @@ storageClassName: do-block-storage
 {{- end }}
 # test data volume configuration
 {{- define "golfDbTestDataPV"}}
-storageClassName: hostpath
+storageClassName: golf-db-pv
 resources:
   requests:
     storage: {{ .Values.golfDb.dataStorageSize }}
 accessModes:
   - ReadWriteOnce
+local:
+    path: /data/db/
+nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - minikube
 {{- end }}
 # production backup volume configuration
 {{- define "golfDbProductionBackupPV"}}
@@ -27,7 +37,7 @@ storageClassName: do-block-storage
 {{- end }}
 # test backup volume configuration
 {{- define "golfDbTestBackupPV"}}
-storageClassName: backup-storage
+storageClassName: golf-backup-pv
 resources:
   requests:
     storage: {{ .Values.golfDb.backupStorageSize }}

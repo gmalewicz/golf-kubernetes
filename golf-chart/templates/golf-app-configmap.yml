@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: golf-app-configmap
 data:
-  PG_SERVER: golf-db-0.golf-db-service
+  PG_SERVER: golf-db-0.golf-db-service.default.svc.cluster.local
   spring.datasource.url: jdbc:postgresql://${PG_SERVER}/golf
   spring.profiles.active: {{ .Values.golfApp.profile }}

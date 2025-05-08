@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: golf-web-configmap
 data:
-  GOLF_SERVER: golf-app-service
+  GOLF_SERVER: golf-app-service.default.svc.cluster.local
   CERT: /cert

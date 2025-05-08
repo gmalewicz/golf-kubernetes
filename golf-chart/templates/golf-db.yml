@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: golf-db
-        image: postgres:13
+        image: postgres:latest
         envFrom:
         - secretRef:
             name: golf-db-secret
