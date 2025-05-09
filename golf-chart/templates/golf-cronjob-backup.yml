@@ -15,7 +15,7 @@ spec:
           - name: golf-backup
             image: postgres:13
             command: ["/bin/sh"]
-            args: ["-c", 'echo "$PGPASS" > /root/.pgpass && chmod 600 /root/.pgpass && pg_dump -w -U golf_usr -h golf-db-service golf --clean > /backups/backup-$(date +"%m-%d-%Y-%H-%M").sql']
+            args: ["-c", 'echo "$PGPASS" > /root/.pgpass && chmod 600 /root/.pgpass && pg_dump -w -U golf_usr -h golf-db-service.default.svc.cluster.local golf --clean > /backups/backup-$(date +"%m-%d-%Y-%H-%M").sql']
             env:
             - name: PGPASS
               valueFrom:
