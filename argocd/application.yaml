@@ -1,4 +1,4 @@
-project: golf
+project: default
 source:
   repoURL: https://github.com/gmalewicz/golf-kubernetes
   path: ./golf-chart
