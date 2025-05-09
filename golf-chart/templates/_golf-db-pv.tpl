@@ -15,16 +15,6 @@ resources:
     storage: {{ .Values.golfDb.dataStorageSize }}
 accessModes:
   - ReadWriteOnce
-local:
-    path: /data/db/
-nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - minikube
 {{- end }}
 # production backup volume configuration
 {{- define "golfDbProductionBackupPV"}}
