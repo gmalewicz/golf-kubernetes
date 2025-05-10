@@ -1,11 +1,17 @@
-project: default
-source:
-  repoURL: https://github.com/gmalewicz/golf-kubernetes
-  path: ./golf-chart
-  targetRevision: 1.0.0
-  helm:
-    valueFiles:
-      - values.yaml
-destination:
-  server: https://kubernetes.default.svc
-  namespace: default
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: golf
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/gmalewicz/golf-kubernetes
+    path: ./golf-chart
+    targetRevision: 1.0.0
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
