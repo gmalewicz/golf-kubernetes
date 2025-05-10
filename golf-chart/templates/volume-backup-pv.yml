@@ -1,0 +1,16 @@
+{{- if eq .Values.development true }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: golf-backup-pv
+spec:
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: golf-backup-pv
+  capacity:
+    storage: 10M
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/backup
+    type: Directory
+{{- end }}

@@ -1,0 +1,17 @@
+{{- if eq .Values.development true }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: golf-web-pv
+spec:
+  storageClassName: golf-web-pv
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1M
+  hostPath:
+    path: /data/cert/
+    type: Directory
+{{- end }}
+
+  
