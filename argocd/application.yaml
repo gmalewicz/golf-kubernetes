@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/gmalewicz/golf-kubernetes
     path: ./golf-chart
-    targetRevision: 1.0.0
+    targetRevision: 2.0.0
     helm:
       valueFiles:
         - values.yaml
