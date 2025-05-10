@@ -6,7 +6,7 @@ metadata:
 spec:
   storageClassName: golf-db-pv
   capacity:
-    storage: 200M
+    storage: 100M
   accessModes:
     - ReadWriteOnce
   hostPath:
