@@ -1,0 +1,46 @@
+---
+# tasks file for golf
+# db - persistent volume for golf database
+# cert - persistent volume for certs required by web server
+# backup - persistent volume for database backup genereted daily 2:00AM
+- name: Create required directories for K3s volumes
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - /data/backup
+    - /data/cert
+    - /data/db
+# Copy localhost certs required to connect golf web page via SSL
+- name: Copy certificates
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/data/cert"
+    mode: 0644
+  loop:
+    - "certificate.crt"
+    - "ca_bundle.crt"
+    - "private.key"
+# Install entire golf application and enable sync with github repository after push to main
+- name: Install golf using ArgoCD
+  ansible.builtin.shell: kubectl apply -f ../argocd/application.yaml -n argocd
+  environment:
+    "{{ kubeconfig_env }}"
+# Get and register web server pod name. Wait max 50s until pod is available
+- name: Get web server pod name
+  ansible.builtin.shell: kubectl get pods -n default -l app=golf-web -o jsonpath='{.items[0].metadata.name}'
+  environment:
+    "{{ kubeconfig_env }}"
+  register: web_pod
+  until: web_pod.stdout | length > 0
+  retries: 5
+  delay: 10
+# Copy websocket test configuration to both supported language versions
+- name: Copy websocket configuration to pod
+  ansible.builtin.shell: kubectl cp ./golf/files/app-config.json {{ web_pod.stdout }}:htdocs/{{ item }}/assets
+  environment:
+    "{{ kubeconfig_env }}"
+  loop:
+    - pl
+    - en-US

@@ -1,0 +1,10 @@
+---
+
+-
+  # hosts where to install application
+  hosts: local
+
+  # roles to be included in this playbook
+  roles:
+    - golf
+...
