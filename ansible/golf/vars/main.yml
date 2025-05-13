@@ -1,0 +1,4 @@
+---
+# vars file for golf
+kubeconfig_env: 
+  {KUBECONFIG: /etc/rancher/k3s/k3s.yaml}

@@ -1,0 +1,7 @@
+---
+# tasks file for third-party-software
+# Copy websocket test configuration to both supported language versions
+- name: Install git
+  apt:
+    name: git
+    state: present
