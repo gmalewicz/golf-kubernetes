@@ -34,7 +34,7 @@
     "{{ kubeconfig_env }}"
   register: web_pod
   until: web_pod.stdout | length > 0
-  retries: 5
+  retries: 30
   delay: 10
 # Copy websocket test configuration to both supported language versions
 - name: Copy websocket configuration to pod
