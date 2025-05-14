@@ -1,2 +1,4 @@
 ---
 # vars file for third-party-software
+kubeconfig_env: 
+  {KUBECONFIG: /etc/rancher/k3s/k3s.yaml}
