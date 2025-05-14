@@ -97,9 +97,6 @@
     done
   environment:
     "{{ kubeconfig_env }}"
-  register: argocd_ready
-  until: argocd_ready is succeeded
-  retries: 10
-  delay: 5
+
 
  
