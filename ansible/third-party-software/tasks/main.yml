@@ -54,6 +54,7 @@
 
 - name: Make kubectl available for the user
   ansible.builtin.shell: |
+    mkdir -p /home/{{kube_user}}/.kube
     cp /etc/rancher/k3s/k3s.yaml /home/{{kube_user}}/.kube/config
     chmod a+rx /home/{{kube_user}}/.kube/config
 
