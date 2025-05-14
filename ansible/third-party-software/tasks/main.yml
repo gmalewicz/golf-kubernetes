@@ -37,21 +37,13 @@
 # Step 2: Install Rancher K3s
 - name: Install K3s
   ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -
-  register: k3s_install
-  until: k3s_install is succeeded
-  retries: 5
-  delay: 10
   
 - name: Wait for K3s to be ready  
   ansible.builtin.shell: |
     while ! k3s kubectl get nodes; do
       sleep 5
     done
-  register: k3s_ready
-  until: k3s_ready is succeeded
-  retries: 10
-  delay: 5
-
+  
 - name: Make kubectl available for the user
   ansible.builtin.shell: |
     mkdir -p /home/{{kube_user}}/.kube
@@ -70,6 +62,15 @@
   ansible.builtin.shell: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
   environment:
     "{{ kubeconfig_env }}"
+
+- name: Wait for all MetalLB pods to be ready
+  ansible.builtin.shell: |
+    kubectl -n metallb-system get pods -o jsonpath="{.items[*].status.containerStatuses[*].ready}" | grep -v false
+  register: metallb_ready_check
+  retries: 10
+  delay: 5
+  until: metallb_ready_check.rc == 0
+  changed_when: false
 
 # Step 4: Configure MetalLB
 - name: Configure MetallB IP address pool
