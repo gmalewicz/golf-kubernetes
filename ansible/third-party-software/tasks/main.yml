@@ -1,7 +1,103 @@
 ---
-# tasks file for third-party-software
-# Copy websocket test configuration to both supported language versions
-- name: Install git
-  apt:
-    name: git
-    state: present
+
+# Step 1: Install docker
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: latest
+    update_cache: true
+
+- name: Create Keyrings directory
+  ansible.builtin.shell: sudo mkdir -p /etc/apt/keyrings
+  
+- name: Download Docker GPG key
+  ansible.builtin.shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+- name: Add Docker repository
+  ansible.builtin.shell: echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+- name: Install Docker
+  ansible.builtin.apt:
+    name: 
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+      - docker-buildx-plugin
+    state: latest
+    update_cache: true
+
+- name: Modify to use docker without sudo
+  ansible.builtin.shell: sudo usermod -aG docker $USER
+
+# Step 2: Install Rancher K3s
+- name: Install K3s
+  ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -
+  register: k3s_install
+  until: k3s_install is succeeded
+  retries: 5
+  delay: 10
+  
+- name: Wait for K3s to be ready  
+  ansible.builtin.shell: |
+    while ! k3s kubectl get nodes; do
+      sleep 5
+    done
+  register: k3s_ready
+  until: k3s_ready is succeeded
+  retries: 10
+  delay: 5
+
+- name: Make kubectl available for the user
+  ansible.builtin.shell: |
+    cp /etc/rancher/k3s/k3s.yaml /home/{{kube_user}}/.kube/config
+    chmod a+rx /home/{{kube_user}}/.kube/config
+
+- name: Set KUBECONFIG environment variable
+  ansible.builtin.shell: |
+    echo "export KUBECONFIG=/home/{{kube_user}}/.kube/config" >> /home/{{kube_user}}/.bashrc
+    echo "export KUBECONFIG=/home/{{kube_user}}/.kube/config" >> /home/{{kube_user}}/.profile
+  environment:
+    HOME: "/home/{{ kube_user }}"
+  
+# Step 3 Install MetalLB and wait until pods are running
+- name: Install MetalLB
+  ansible.builtin.shell: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+  environment:
+    "{{ kubeconfig_env }}"
+
+# Step 4: Configure MetalLB
+- name: Configure MetallB IP address pool
+  ansible.builtin.shell: kubectl apply -f ./third-party-software/files/metallb-config.yaml
+  environment:
+    "{{ kubeconfig_env }}"
+
+# Install ArgoCD
+- name: Create ArgoCD namespace
+  ansible.builtin.shell: kubectl create namespace argocd
+  environment:
+    "{{ kubeconfig_env }}"
+  failed_when: false
+
+- name: Install ArgoCD
+  ansible.builtin.shell: kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  environment:
+    "{{ kubeconfig_env }}"
+
+- name: Wait for ArgoCD to be ready
+  ansible.builtin.shell: |
+    while ! kubectl get pods -n argocd | grep -q Running; do
+      sleep 5
+    done
+  environment:
+    "{{ kubeconfig_env }}"
+  register: argocd_ready
+  until: argocd_ready is succeeded
+  retries: 10
+  delay: 5
+
+ 
