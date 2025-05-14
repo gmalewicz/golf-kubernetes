@@ -27,6 +27,7 @@
   ansible.builtin.shell: kubectl apply -f ../argocd/application.yaml -n argocd
   environment:
     "{{ kubeconfig_env }}"
+
 # Get and register web server pod name. Wait max 50s until pod is available
 - name: Get web server pod name
   ansible.builtin.shell: kubectl get pods -n default -l app=golf-web -o jsonpath='{.items[0].metadata.name}'
@@ -36,6 +37,11 @@
   until: web_pod.stdout | length > 0
   retries: 30
   delay: 10
+
+- name: Pause for 10 seconds to finsis web server start
+  ansible.builtin.pause:
+    seconds: 10
+
 # Copy websocket test configuration to both supported language versions
 - name: Copy websocket configuration to pod
   ansible.builtin.shell: kubectl cp ./golf/files/app-config.json {{ web_pod.stdout }}:htdocs/{{ item }}/assets
