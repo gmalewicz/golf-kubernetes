@@ -67,8 +67,8 @@
   ansible.builtin.shell: |
     kubectl -n metallb-system get pods -o jsonpath="{.items[*].status.containerStatuses[*].ready}" | grep -v false
   register: metallb_ready_check
-  retries: 10
-  delay: 5
+  retries: 30
+  delay: 10
   until: metallb_ready_check.rc == 0
   changed_when: false
 
