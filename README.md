@@ -1,80 +1,71 @@
-golf-chart
-
-Install DGNG application in kubernetes cluster
-
-Default applies for DigitalOcean kubernetes cluster
-
-1. For installation in DigitalOcean kubernetes cluster (production)
-
-a. Copy values.yaml into prod-values.yaml and update it with correct data regarding credentials, allowed origin, etc... 
-
-b. Install golf-chart using previously created values file
-
-c. Copy domain ssl certificates to cert volume
-
-2. For testing locally on Windows WS2 Ubuntu
+# Golf Application
 
 Prerequisites:
 
-  - Installed Ubuntu on Windows WS2 with user golf
-    
-a. Install Ansible
- 
-  sudo apt update
-  sudo apt install -y ansible
+- Installed Ubuntu on Windows WSL2 with user golf
 
-b. Install git
+## Install git
 
-  sudo apt install git
+```console
+sudo apt install git
+```
 
-c. Clone golf-kubernetes project
+## Clone golf-kubernetes project
 
-  git clone https://github.com/gmalewicz/golf-kubernetes.git
+```console
+git clone https://github.com/gmalewicz/golf-kubernetes.git
+```
 
-d. Set root password (set password to 'welcome'). For fresh installation ws2 Ubuntu root password is not set. sudo passwd root
+## Run script
 
-  sudo passwd root
+```console
+sudo bash ./golf-kubernetes/install.sh
+```
 
-e. Optional: Modify root password if set to different than 'welcome'
+Note: Number of retries depends on machine performance and internet speed. Waiting time might take several minutes \
+Note: Do not breake the playbook even if prompted
 
-  go to golf-kubernetes/ansible directory open 'hosts' files, modify 'ansible_become_pass=****' to point to your root password and save that file
-  
-f. go to golf-kubernetes/ansible and run execute playbook:
+## Access to golf appication
 
-  cd golf-kubernetes/ansible
-  ansible-playbook golf_playbook.yaml
+### Start port forwarding
 
-  Note: Number of retries depends on machine performance and internet speed. Waiting time might take several minutes
-  Note: Do not breake the playbook even if prompted
+```console
+kubectl port-forward svc/golf-web-lb 8900:443
+```
 
-g. Optional: Acccess to ArgoCD UI 
+### Open Golf spplication 
 
-  kubectl port-forward svc/argocd-server -n argocd 8901:443
-  https://localhost:8901 (from your local browser to access UI)
-  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d (to get password - user is admin) 
+[https://localhost:8900](https://) 
 
-  Note: You need to reopen ubuntu session to make kubectl working for your user otherwise use sudo
+Note: Credentials: golfer/welcome
 
-h. Access to golf appication (credentials golfer/welcome)
+## Optional: Acccess to ArgoCD UI
 
-  kubectl port-forward svc/golf-web-lb 8900:443
-  https://localhost:8900 (from your local browser to access) 
+### Start port forwarding
 
-  Note: You need to reopen ubuntu session to make kubectl working for your user otherwise use sudo
-  
-  
-----------------------------------------------------------------------------------------------------------------------------------------
+```console
+kubectl port-forward svc/argocd-server -n argocd 8901:443
+```
 
-Other commands - work in progress
+### Open ArgoCD UI 
 
-e. Port forward for application
+[https://localhost:8901](https://) 
 
-  kubectl port-forward svc/golf-web-lb 8900:443
+### Get password for admin user 
+
+```console
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d 
+```
+
+Note: You need to reopen ubuntu session to make kubectl working for your user otherwise use sudo \
+Note: Cluster is synchronized with repository main branch
+
+## Work in progress
 
 e. Socket bind
 
-  sudo socat TCP-LISTEN:8443,fork,bind=0.0.0.0 TCP:127.0.0.1:6443
+sudo socat TCP-LISTEN:8443,fork,bind=0.0.0.0 TCP:127.0.0.1:6443
 
 e. Minify to find port
 
-  kubectl config view --minify
+kubectl config view --minify

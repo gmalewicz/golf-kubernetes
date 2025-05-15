@@ -38,9 +38,10 @@
   retries: 30
   delay: 10
 
-- name: Pause for 10 seconds to finsis web server start
-  ansible.builtin.pause:
-    seconds: 10
+- name: Wait for web server pod to be ready
+  ansible.builtin.shell: kubectl wait --for=condition=ready pod -n default {{ web_pod.stdout }}
+  environment:
+    "{{ kubeconfig_env }}"
 
 # Copy websocket test configuration to both supported language versions
 - name: Copy websocket configuration to pod
