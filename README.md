@@ -23,7 +23,9 @@ sudo bash ./golf-kubernetes/install.sh
 ```
 
 Note: Number of retries depends on machine performance and internet speed. Waiting time might take several minutes \
-Note: Do not breake the playbook even if prompted
+Note: Do not break the playbook execution. \
+Note: You can run agin the script if it fails until it finish with success. Accept file overwritting if prompted. \
+Note: You need to reopen ubuntu session to make kubectl working for your user otherwise use sudo
 
 ## Access to golf appication
 
@@ -57,7 +59,6 @@ kubectl port-forward svc/argocd-server -n argocd 8901:443
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d 
 ```
 
-Note: You need to reopen ubuntu session to make kubectl working for your user otherwise use sudo \
 Note: Cluster is synchronized with repository main branch
 
 ## Work in progress
