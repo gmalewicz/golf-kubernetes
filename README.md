@@ -1,6 +1,20 @@
 # Golf Application
 
-Prerequisites:
+Set of tools for creation of developement CI environment based on Rancher K3s on WSL2 Ubuntu 
+
+Used technologes:
+- Kubernetes for production 
+- Docker required by K3s
+- Rancher K3s for developement CI
+- MetalLB as a network load balancer 
+- HELM for managing Kubernetes application
+- Bash script to start entire installatiom
+- Ansible for installation automation
+- ArgoCD for CI with git archive (push on main)  
+
+Note: Images for backend (golf-app) and frontend (golf-web) applications are build by GitHub Actions in separate repositories. They are stored in DockerHub.
+
+## Prerequisites:
 
 - Installed Ubuntu on Windows WSL2 with user golf
 
@@ -35,7 +49,7 @@ Note: You need to reopen ubuntu session to make kubectl working for your user ot
 kubectl port-forward svc/golf-web-lb 8900:443
 ```
 
-### Open Golf spplication 
+### Open Golf application 
 
 [https://localhost:8900](https://) 
 
