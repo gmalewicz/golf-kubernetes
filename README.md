@@ -1,16 +1,15 @@
 # Golf Application
 
-Set of tools for creation of developement CI environment based on Rancher K3s on WSL2 Ubuntu 
+Set of tools for creation of developement CD environment based on Rancher K3s on WSL2 Ubuntu 
 
-Used technologes:
-- Kubernetes for production 
+Used technologes: 
 - Docker required by K3s
-- Rancher K3s for developement CI
+- Rancher K3s for developement CD
 - MetalLB as a network load balancer 
 - HELM for managing Kubernetes application
-- Bash script to start entire installatiom
+- Bash script to start entire installation
 - Ansible for installation automation
-- ArgoCD for CI with git archive (push on main)  
+- ArgoCD for CD with git archive (push on main)  
 
 Note: Images for backend (golf-app) and frontend (golf-web) applications are build by GitHub Actions in separate repositories. They are stored in DockerHub.
 
@@ -74,13 +73,3 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 ```
 
 Note: Cluster is synchronized with repository main branch
-
-## Work in progress
-
-e. Socket bind
-
-sudo socat TCP-LISTEN:8443,fork,bind=0.0.0.0 TCP:127.0.0.1:6443
-
-e. Minify to find port
-
-kubectl config view --minify
