@@ -19,7 +19,7 @@ accessModes:
 # production backup volume configuration
 {{- define "golfDbProductionBackupPV"}}
 resources:
-requests:
+  requests:
     storage: {{ .Values.golfDb.backupStorageSize }}
 accessModes:
 - ReadWriteOnce
