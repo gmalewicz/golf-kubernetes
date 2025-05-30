@@ -34,6 +34,9 @@
 - name: Modify to use docker without sudo
   ansible.builtin.shell: sudo usermod -aG docker $USER
 
+- name: Modify access to docker.sock
+  ansible.builtin.shell: sudo chmod 666 /var/run/docker.sock
+
 # Step 2: Install Rancher K3s
 - name: Install K3s
   ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -
